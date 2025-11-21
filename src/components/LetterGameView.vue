@@ -163,6 +163,16 @@ const checkAnswer = (option) => {
       origin: { y: 0.6 }
     });
 
+    // 語音說出 Great Job（開心且快速的語調）
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance('Great Job!');
+      utterance.lang = 'en-US';
+      utterance.rate = 1.2;  // 快一點
+      utterance.pitch = 1.5; // 開心的高音調
+      window.speechSynthesis.speak(utterance);
+    }
+
     setTimeout(() => {
       showSuccess.value = false;
 
