@@ -128,7 +128,17 @@ export default {
           spread: 70,
           origin: { y: 0.6 }
         });
-        
+
+        // 語音說出 Excellent（開心且快速的語調）
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance('Excellent!');
+          utterance.lang = 'en-US';
+          utterance.rate = 1.2;  // 快一點
+          utterance.pitch = 1.5; // 開心的高音調
+          window.speechSynthesis.speak(utterance);
+        }
+
         setTimeout(() => {
           this.nextQuestion();
         }, 1500);
