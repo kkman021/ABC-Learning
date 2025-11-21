@@ -129,7 +129,19 @@ const startGame = () => {
   // Get current letter + 3 random others
   const others = alphabet.filter(a => a.letter !== props.item.letter);
   const shuffledOthers = others.sort(() => 0.5 - Math.random()).slice(0, 3);
-  const options = [props.item, ...shuffledOthers];
+
+  // Transform alphabet entries to flat objects like props.item
+  const otherOptions = shuffledOthers.map(item => {
+    const randomIndex = Math.floor(Math.random() * item.words.length);
+    return {
+      letter: item.letter,
+      word: item.words[randomIndex],
+      image: item.images[randomIndex],
+      color: item.color
+    };
+  });
+
+  const options = [props.item, ...otherOptions];
   // Shuffle options
   gameOptions.value = options.sort(() => 0.5 - Math.random());
 
@@ -244,15 +256,22 @@ onMounted(() => {
 
 .back-btn {
   align-self: flex-start;
-  background: rgba(255, 255, 255, 0.3);
-  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(0, 0, 0, 0.1);
   padding: 10px 20px;
   border-radius: 30px;
-  color: white;
+  color: var(--text-color);
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
   backdrop-filter: blur(5px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.back-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .content {
@@ -277,9 +296,9 @@ onMounted(() => {
 
 .game-title {
   font-size: 3rem;
-  color: white;
+  color: var(--text-color);
   margin-bottom: 30px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  text-shadow: none;
 }
 
 .options-grid {
@@ -423,6 +442,17 @@ onMounted(() => {
 }
 
 @media (max-width: 600px) {
+  .detail-view {
+    padding: 15px;
+  }
+
+  .back-btn {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    min-width: 80px;
+    min-height: 44px;
+  }
+
   .letter-display { font-size: 5rem; }
   .main-image { width: 200px; height: 200px; }
   .word-display { font-size: 2.5rem; }

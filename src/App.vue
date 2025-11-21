@@ -46,14 +46,17 @@ const toggleMode = () => {
 
 <template>
   <div class="app-container">
-    <header class="main-header">
+    <header v-if="currentMode === 'grid'" class="main-header">
       <h1>ABC Learning Game</h1>
-      <p v-if="currentMode === 'grid'">Tap a letter to learn!</p>
-      <p v-else-if="currentMode === 'quiz'">Test your knowledge!</p>
+      <p>Tap a letter to learn!</p>
       <button @click="toggleMode" class="mode-toggle-button">
-        {{ currentMode === 'grid' ? 'Start Quiz' : 'Back to Learning' }}
+        Start Quiz
       </button>
     </header>
+
+    <button v-else-if="currentMode === 'quiz'" @click="toggleMode" class="back-button-quiz">
+      ← Back
+    </button>
 
     <transition name="fade" mode="out-in">
       <LetterGrid
@@ -123,6 +126,28 @@ const toggleMode = () => {
   background-color: #ec971f;
 }
 
+.back-button-quiz {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  color: var(--text-color);
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.back-button-quiz:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
 @keyframes slideDown {
   from { transform: translateY(-20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
@@ -139,6 +164,11 @@ const toggleMode = () => {
 }
 
 @media (max-width: 600px) {
+  .main-header {
+    margin-bottom: 20px;
+    padding-bottom: 0;
+  }
+
   .main-header h1 {
     font-size: 2rem;
     margin-bottom: 15px;
@@ -146,13 +176,23 @@ const toggleMode = () => {
 
   .main-header p {
     font-size: 1.2rem;
+    margin-bottom: 10px;
   }
 
   .mode-toggle-button {
     position: static;
-    margin-top: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     width: 100%;
     max-width: 200px;
+  }
+
+  .back-button-quiz {
+    top: 10px;
+    left: 10px;
+    padding: 10px 18px;
+    font-size: 1rem;
+    min-height: 44px;
   }
 }
 </style>

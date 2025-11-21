@@ -337,4 +337,33 @@ export default {
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
+
+@media (max-width: 600px) {
+  .quiz-view {
+    padding: 10px;
+  }
+
+  .image-container {
+    margin-bottom: 20px;
+  }
+
+  .replay-button {
+    margin: 15px 0;
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+
+  .choices {
+    gap: 10px;
+  }
+
+  .choices button {
+    padding: 15px;
+    font-size: 1.1rem;
+  }
+
+  .feedback-message {
+    font-size: 1.5rem;
+  }
+}
 </style>
