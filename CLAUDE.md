@@ -46,12 +46,12 @@ App.vue (root)
 {
   letter: String,   // 大寫字母
   word: String,     // 關聯單字
-  image: String,    // 圖片路徑 (import 或 placeholder)
+  image: String,    // 圖片路徑 (import)
   color: String     // 卡片背景色 (hex)
 }
 ```
 
-目前僅 A-G 有實際圖片資源 (`src/assets/images/`),其餘使用 SVG placeholder。
+所有 26 個字母 (A-Z) 均有實際圖片資源於 `src/assets/images/`。
 
 ### Key Features
 
