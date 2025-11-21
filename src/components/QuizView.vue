@@ -209,7 +209,7 @@ export default {
 .quiz-view {
   width: 100%;
   max-width: 600px;
-  padding: 20px;
+  padding: 30px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
