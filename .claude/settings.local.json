@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__nano-banana__get_configuration_status",
+      "mcp__nano-banana__generate_image"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
