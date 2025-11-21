@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import MusicButton from './MusicButton.vue';
 
 const props = defineProps({
@@ -25,6 +25,10 @@ const speakWord = () => {
 const handleNext = () => {
   emit('next');
 };
+
+watch(() => props.item, () => {
+  speakWord();
+});
 
 onMounted(() => {
   // Auto-speak when entering detail view
