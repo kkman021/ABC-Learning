@@ -15,8 +15,8 @@ const handleSelect = (item) => {
       v-for="item in alphabet"
       :key="item.letter"
       :letter="item.letter"
-      :word="item.word"
-      :image="item.image"
+      :word="item.words[0]"
+      :image="item.images[0]"
       :color="item.color"
       @select="handleSelect(item)"
     />

@@ -40,7 +40,7 @@ const speakWord = () => {
   utterance.lang = 'en-US';
   utterance.rate = 0.8; // Slightly slower for kids
   utterance.pitch = 1.2; // Slightly higher pitch for friendliness
-  
+
   window.speechSynthesis.speak(utterance);
 };
 
@@ -179,16 +179,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="detail-view" :style="{ backgroundColor: item.color }">
+  <div class="detail-view">
     <button class="back-btn" @click="$emit('back')">
       ← Back
     </button>
     
     <!-- Normal View -->
     <div v-if="!isGameActive" class="content" @click="speakWord">
-      <div class="letter-display">{{ item.letter }}</div>
+      <div class="letter-display" :style="{ color: item.color, textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }">{{ item.letter }}</div>
       <img :src="item.image" :alt="item.word" class="main-image" />
-      <div class="word-display">{{ item.word }}</div>
+      <div class="word-display" :style="{ color: item.color, textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }">{{ item.word }}</div>
       <div class="hint">Tap to hear again!</div>
     </div>
 
@@ -196,8 +196,8 @@ onMounted(() => {
     <div v-else class="game-content">
       <h2 class="game-title">Which one is {{ item.letter }}?</h2>
       <div class="options-grid">
-        <div 
-          v-for="option in gameOptions" 
+        <div
+          v-for="option in gameOptions"
           :key="option.letter"
           class="option-card"
           @click="checkAnswer(option)"
@@ -418,7 +418,7 @@ onMounted(() => {
 }
 
 .game-btn {
-  background: #FFE66D;
+  background: #FFC700;
   color: #2C3E50;
 }
 
