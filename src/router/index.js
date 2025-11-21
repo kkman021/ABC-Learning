@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import LetterGrid from '../components/LetterGrid.vue';
 import DetailView from '../components/DetailView.vue';
 import QuizView from '../components/QuizView.vue';
+import LetterGameView from '../components/LetterGameView.vue';
 import { alphabet } from '../data/alphabet';
 
 // 隨機選擇單字和圖片的輔助函數
@@ -32,6 +33,11 @@ const routes = [
       const letterData = getRandomWord(route.params.letter);
       return { item: letterData };
     }
+  },
+  {
+    path: '/letter/:letter/game',
+    name: 'letterGame',
+    component: LetterGameView
   },
   {
     path: '/quiz',
