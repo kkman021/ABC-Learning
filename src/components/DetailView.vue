@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, watch, ref } from 'vue';
 import confetti from 'canvas-confetti';
-import MusicButton from './MusicButton.vue';
 import { alphabet } from '../data/alphabet';
 
 const props = defineProps({
@@ -181,7 +180,6 @@ onMounted(() => {
     </div>
     
     <div v-if="!isGameActive" class="controls">
-      <MusicButton />
       <button class="game-btn" @click="startGame">
         ❓ Find it out!
       </button>

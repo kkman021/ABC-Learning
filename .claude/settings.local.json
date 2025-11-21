@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "mcp__nano-banana__get_configuration_status",
-      "mcp__nano-banana__generate_image"
+      "mcp__nano-banana__generate_image",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

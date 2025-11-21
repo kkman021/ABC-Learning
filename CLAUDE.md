@@ -28,7 +28,6 @@ App.vue (root)
 ├── LetterGrid.vue - 字母卡片網格視圖
 │   └── LetterCard.vue - 單一字母卡片 (可點擊)
 └── DetailView.vue - 字母詳細視圖
-    └── MusicButton.vue - 音樂播放按鈕 (unused in current version)
 ```
 
 ### State Management
