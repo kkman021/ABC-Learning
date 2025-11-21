@@ -249,9 +249,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 20px;
   overflow-y: auto;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .back-btn {
@@ -421,6 +422,7 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   gap: 20px;
+  margin-top: 30px;
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
