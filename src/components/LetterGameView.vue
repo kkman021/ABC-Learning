@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import confetti from 'canvas-confetti';
 import { alphabet } from '../data/alphabet';
@@ -165,7 +165,12 @@ const checkAnswer = (option) => {
 
     setTimeout(() => {
       showSuccess.value = false;
-      router.push(`/letter/${currentItem.value.letter}`);
+
+      // 選擇下一個隨機字母（排除當前字母）
+      const otherLetters = alphabet.filter(a => a.letter !== currentItem.value.letter);
+      const nextLetter = otherLetters[Math.floor(Math.random() * otherLetters.length)];
+
+      router.push(`/letter/${nextLetter.letter}/game`);
     }, 2500);
   } else {
     playSound('error');
@@ -173,6 +178,11 @@ const checkAnswer = (option) => {
 };
 
 onMounted(() => {
+  startGame();
+});
+
+// 監聽路由參數變化，更新遊戲內容
+watch(() => route.params.letter, () => {
   startGame();
 });
 </script>
