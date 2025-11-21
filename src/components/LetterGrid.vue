@@ -1,8 +1,21 @@
 <script setup>
+import { computed } from 'vue';
 import LetterCard from './LetterCard.vue';
 import { alphabet } from '../data/alphabet';
 
 const emit = defineEmits(['selectLetter']);
+
+// Generate random display data for each letter
+const displayAlphabet = computed(() => {
+  return alphabet.map(item => {
+    const randomIndex = Math.floor(Math.random() * item.words.length);
+    return {
+      ...item,
+      displayWord: item.words[randomIndex],
+      displayImage: item.images[randomIndex]
+    };
+  });
+});
 
 const handleSelect = (item) => {
   emit('selectLetter', item);
@@ -12,11 +25,11 @@ const handleSelect = (item) => {
 <template>
   <div class="grid-container">
     <LetterCard
-      v-for="item in alphabet"
+      v-for="item in displayAlphabet"
       :key="item.letter"
       :letter="item.letter"
-      :word="item.words[0]"
-      :image="item.images[0]"
+      :word="item.displayWord"
+      :image="item.displayImage"
       :color="item.color"
       @select="handleSelect(item)"
     />
