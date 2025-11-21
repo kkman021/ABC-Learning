@@ -199,7 +199,7 @@ onMounted(() => {
     <!-- Normal View -->
     <div v-if="!isGameActive" class="content" @click="speakWord">
       <div class="letter-display" :style="{ color: item.color, textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }">{{ item.letter }}</div>
-      <img :src="item.image" :alt="item.word" class="main-image" />
+      <img :src="item.image" :alt="item.word" class="main-image" loading="lazy" decoding="async" />
       <div class="word-display" :style="{ color: item.color, textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }">{{ item.word }}</div>
       <div class="hint">Tap to hear again!</div>
     </div>
@@ -214,7 +214,7 @@ onMounted(() => {
           class="option-card"
           @click="checkAnswer(option)"
         >
-          <img :src="option.image" class="option-image" />
+          <img :src="option.image" class="option-image" loading="lazy" decoding="async" />
         </div>
       </div>
     </div>

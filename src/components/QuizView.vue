@@ -3,7 +3,7 @@
     <div v-if="currentQuestion" class="quiz-content">
       <div class="image-container">
         <transition name="fade" mode="out-in">
-          <img :key="currentQuestion.image" :src="currentQuestion.image" :alt="currentQuestion.word" class="quiz-image" />
+          <img :key="currentQuestion.image" :src="currentQuestion.image" :alt="currentQuestion.word" class="quiz-image" loading="lazy" decoding="async" />
         </transition>
       </div>
 

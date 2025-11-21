@@ -21,7 +21,7 @@ const handleClick = () => {
   >
     <div class="letter-content">
       <span class="letter">{{ letter }}</span>
-      <img :src="image" :alt="word" class="letter-image" />
+      <img :src="image" :alt="word" class="letter-image" loading="lazy" decoding="async" />
       <span class="word">{{ word }}</span>
     </div>
   </div>
