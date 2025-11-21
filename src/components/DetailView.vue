@@ -132,6 +132,18 @@ const startGame = () => {
   const options = [props.item, ...shuffledOthers];
   // Shuffle options
   gameOptions.value = options.sort(() => 0.5 - Math.random());
+
+  // Speak the question
+  setTimeout(() => {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(`Which one is ${props.item.letter}?`);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.8;
+      utterance.pitch = 1.2;
+      window.speechSynthesis.speak(utterance);
+    }
+  }, 300);
 };
 
 const checkAnswer = (option) => {
@@ -255,8 +267,11 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   width: 100%;
   max-width: 600px;
+  flex: 1;
+  padding-top: 20px;
   animation: popIn 0.5s ease;
 }
 
