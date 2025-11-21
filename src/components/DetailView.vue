@@ -1,13 +1,14 @@
 <script setup>
 import { onMounted, onUnmounted, watch, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import confetti from 'canvas-confetti';
 import { alphabet } from '../data/alphabet';
+
+const router = useRouter();
 
 const props = defineProps({
   item: Object,
 });
-
-const emit = defineEmits(['back', 'next']);
 
 const isGameActive = ref(false);
 const showSuccess = ref(false);
@@ -45,7 +46,13 @@ const speakWord = () => {
 };
 
 const handleNext = () => {
-  emit('next');
+  if (!props.item) return;
+
+  const currentIndex = alphabet.findIndex(a => a.letter === props.item.letter);
+  const nextIndex = (currentIndex + 1) % alphabet.length;
+  const nextLetter = alphabet[nextIndex].letter;
+
+  router.push(`/letter/${nextLetter}`);
 };
 
 let lastSoundTime = 0;
@@ -171,7 +178,7 @@ const checkAnswer = (option) => {
     setTimeout(() => {
       isGameActive.value = false;
       showSuccess.value = false;
-      emit('back'); // Return to list view on success
+      router.push('/'); // Return to list view on success
     }, 2500);
   } else {
     playSound('error');
@@ -192,7 +199,7 @@ onMounted(() => {
 
 <template>
   <div class="detail-view">
-    <button class="back-btn" @click="$emit('back')">
+    <button class="back-btn" @click="router.push('/')">
       ← Back
     </button>
     

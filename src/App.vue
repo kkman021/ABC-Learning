@@ -1,52 +1,25 @@
 <script setup>
-import { ref, computed } from 'vue';
-import LetterGrid from './components/LetterGrid.vue';
-import DetailView from './components/DetailView.vue';
-import QuizView from './components/QuizView.vue'; // Import QuizView
-import { alphabet } from './data/alphabet';
+import { computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
-const currentMode = ref('grid'); // 'grid', 'detail', or 'quiz'
-const selectedLetter = ref(null);
+const router = useRouter();
+const route = useRoute();
 
-// 隨機選擇一個單字和圖片
-const getRandomWord = (item) => {
-  const randomIndex = Math.floor(Math.random() * item.words.length);
-  return {
-    letter: item.letter,
-    word: item.words[randomIndex],
-    image: item.images[randomIndex],
-    color: item.color
-  };
-};
+const isHomePage = computed(() => route.name === 'home');
+const isQuizPage = computed(() => route.name === 'quiz');
 
-const handleSelectLetter = (item) => {
-  selectedLetter.value = getRandomWord(item);
-  currentMode.value = 'detail';
-};
-
-const handleBack = () => {
-  currentMode.value = 'grid';
-  selectedLetter.value = null;
-};
-
-const handleNext = () => {
-  if (!selectedLetter.value) return;
-
-  const currentIndex = alphabet.findIndex(item => item.letter === selectedLetter.value.letter);
-  const nextIndex = (currentIndex + 1) % alphabet.length;
-  selectedLetter.value = getRandomWord(alphabet[nextIndex]);
-};
-
-// Function to toggle between grid and quiz modes
 const toggleMode = () => {
-  currentMode.value = currentMode.value === 'grid' ? 'quiz' : 'grid';
-  selectedLetter.value = null; // Clear selected letter when changing mode
+  if (isQuizPage.value) {
+    router.push('/');
+  } else {
+    router.push('/quiz');
+  }
 };
 </script>
 
 <template>
   <div class="app-container">
-    <header v-if="currentMode === 'grid'" class="main-header">
+    <header v-if="isHomePage" class="main-header">
       <h1>ABC Learning Game</h1>
       <p>Tap a letter to learn!</p>
       <button @click="toggleMode" class="mode-toggle-button">
@@ -54,26 +27,12 @@ const toggleMode = () => {
       </button>
     </header>
 
-    <button v-else-if="currentMode === 'quiz'" @click="toggleMode" class="back-button-quiz">
+    <button v-else-if="isQuizPage" @click="toggleMode" class="back-button-quiz">
       ← Back
     </button>
 
     <transition name="fade" mode="out-in">
-      <LetterGrid
-        v-if="currentMode === 'grid'"
-        @selectLetter="handleSelectLetter"
-      />
-
-      <DetailView
-        v-else-if="currentMode === 'detail'"
-        :item="selectedLetter"
-        @back="handleBack"
-        @next="handleNext"
-      />
-
-      <QuizView
-        v-else-if="currentMode === 'quiz'"
-      />
+      <router-view />
     </transition>
   </div>
 </template>
@@ -90,9 +49,9 @@ const toggleMode = () => {
   text-align: center;
   margin-bottom: 30px;
   animation: slideDown 0.5s ease;
-  position: relative; /* Added for button positioning */
-  width: 100%; /* Ensure header takes full width for button */
-  padding-bottom: 20px; /* Space for the button */
+  position: relative;
+  width: 100%;
+  padding-bottom: 20px;
 }
 
 .main-header h1 {
@@ -110,8 +69,8 @@ const toggleMode = () => {
 
 .mode-toggle-button {
   position: absolute;
-  top: 20px; /* Adjust as needed */
-  right: 20px; /* Adjust as needed */
+  top: 20px;
+  right: 20px;
   padding: 10px 15px;
   background-color: #f0ad4e;
   color: white;
@@ -196,4 +155,3 @@ const toggleMode = () => {
   }
 }
 </style>
-

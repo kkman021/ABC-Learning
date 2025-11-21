@@ -1,9 +1,10 @@
 <script setup>
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import LetterCard from './LetterCard.vue';
 import { alphabet } from '../data/alphabet';
 
-const emit = defineEmits(['selectLetter']);
+const router = useRouter();
 
 // Generate random display data for each letter
 const displayAlphabet = computed(() => {
@@ -18,7 +19,7 @@ const displayAlphabet = computed(() => {
 });
 
 const handleSelect = (item) => {
-  emit('selectLetter', item);
+  router.push(`/letter/${item.letter}`);
 };
 </script>
 
