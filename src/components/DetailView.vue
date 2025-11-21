@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch, ref } from 'vue';
+import { onMounted, onUnmounted, watch, ref } from 'vue';
 import confetti from 'canvas-confetti';
 import { alphabet } from '../data/alphabet';
 
@@ -12,6 +12,23 @@ const emit = defineEmits(['back', 'next']);
 const isGameActive = ref(false);
 const showSuccess = ref(false);
 const gameOptions = ref([]);
+
+// Create a single AudioContext for the component lifecycle
+let audioCtx = null;
+const getAudioContext = () => {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioCtx;
+};
+
+// Cleanup AudioContext on component unmount
+onUnmounted(() => {
+  if (audioCtx) {
+    audioCtx.close();
+    audioCtx = null;
+  }
+});
 
 const speakWord = () => {
   if (!window.speechSynthesis || isGameActive.value) return;
@@ -31,71 +48,78 @@ const handleNext = () => {
   emit('next');
 };
 
+let lastSoundTime = 0;
 const playSound = (type) => {
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const oscillator = audioCtx.createOscillator();
-  const gainNode = audioCtx.createGain();
-  
-  oscillator.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-  
+  // Debounce: prevent playing sounds too frequently (min 100ms between sounds)
+  const now = Date.now();
+  if (now - lastSoundTime < 100) return;
+  lastSoundTime = now;
+
+  const ctx = getAudioContext();
+
   if (type === 'success') {
     // Victory fanfare!
-    const now = audioCtx.currentTime;
-    
+    const currentTime = ctx.currentTime;
+
     // C5
-    const osc1 = audioCtx.createOscillator();
-    const gain1 = audioCtx.createGain();
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
     osc1.connect(gain1);
-    gain1.connect(audioCtx.destination);
+    gain1.connect(ctx.destination);
     osc1.frequency.value = 523.25;
-    gain1.gain.setValueAtTime(0.2, now);
-    gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-    osc1.start(now);
-    osc1.stop(now + 0.4);
+    gain1.gain.setValueAtTime(0.2, currentTime);
+    gain1.gain.exponentialRampToValueAtTime(0.01, currentTime + 0.4);
+    osc1.start(currentTime);
+    osc1.stop(currentTime + 0.4);
 
     // E5
-    const osc2 = audioCtx.createOscillator();
-    const gain2 = audioCtx.createGain();
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
     osc2.connect(gain2);
-    gain2.connect(audioCtx.destination);
+    gain2.connect(ctx.destination);
     osc2.frequency.value = 659.25;
-    gain2.gain.setValueAtTime(0.2, now + 0.1);
-    gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-    osc2.start(now + 0.1);
-    osc2.stop(now + 0.5);
+    gain2.gain.setValueAtTime(0.2, currentTime + 0.1);
+    gain2.gain.exponentialRampToValueAtTime(0.01, currentTime + 0.5);
+    osc2.start(currentTime + 0.1);
+    osc2.stop(currentTime + 0.5);
 
     // G5
-    const osc3 = audioCtx.createOscillator();
-    const gain3 = audioCtx.createGain();
+    const osc3 = ctx.createOscillator();
+    const gain3 = ctx.createGain();
     osc3.connect(gain3);
-    gain3.connect(audioCtx.destination);
+    gain3.connect(ctx.destination);
     osc3.frequency.value = 783.99;
-    gain3.gain.setValueAtTime(0.2, now + 0.2);
-    gain3.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
-    osc3.start(now + 0.2);
-    osc3.stop(now + 0.8);
+    gain3.gain.setValueAtTime(0.2, currentTime + 0.2);
+    gain3.gain.exponentialRampToValueAtTime(0.01, currentTime + 0.8);
+    osc3.start(currentTime + 0.2);
+    osc3.stop(currentTime + 0.8);
 
     // C6
-    const osc4 = audioCtx.createOscillator();
-    const gain4 = audioCtx.createGain();
+    const osc4 = ctx.createOscillator();
+    const gain4 = ctx.createGain();
     osc4.connect(gain4);
-    gain4.connect(audioCtx.destination);
+    gain4.connect(ctx.destination);
     osc4.frequency.value = 1046.50;
-    gain4.gain.setValueAtTime(0.2, now + 0.3);
-    gain4.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
-    osc4.start(now + 0.3);
-    osc4.stop(now + 1.2);
+    gain4.gain.setValueAtTime(0.2, currentTime + 0.3);
+    gain4.gain.exponentialRampToValueAtTime(0.01, currentTime + 1.2);
+    osc4.start(currentTime + 0.3);
+    osc4.stop(currentTime + 1.2);
 
   } else {
     // Buzz! (Low pitch sawtooth)
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
     oscillator.type = 'sawtooth';
-    oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
-    oscillator.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
-    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    oscillator.frequency.setValueAtTime(150, ctx.currentTime);
+    oscillator.frequency.linearRampToValueAtTime(100, ctx.currentTime + 0.3);
+    gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
     oscillator.start();
-    oscillator.stop(audioCtx.currentTime + 0.3);
+    oscillator.stop(ctx.currentTime + 0.3);
   }
 };
 
