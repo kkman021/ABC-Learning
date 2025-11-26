@@ -87,8 +87,8 @@ const toggleMode = () => {
 
 .back-button-quiz {
   position: fixed;
-  top: 20px;
-  left: 20px;
+  top: max(20px, env(safe-area-inset-top));
+  left: max(20px, env(safe-area-inset-left));
   padding: 10px 20px;
   background: rgba(255, 255, 255, 0.95);
   border: 2px solid rgba(0, 0, 0, 0.1);
